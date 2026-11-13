@@ -13,7 +13,7 @@ import { GroupDetailPage } from './pages/GroupDetailPage';
 import { ExpensesPage } from './pages/ExpensesPage';
 import { AnalyticsPage } from './pages/AnalyticsPage';
 import { ProfilePage } from './pages/ProfilePage';
-import { AdminPage } from './pages/AdminPage';
+import { OtpVerificationPage } from './pages/OtpVerificationPage';
 
 // Protected Route Wrapper
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -65,6 +65,7 @@ export const AppRoutes: React.FC = () => {
       {/* Public Pages */}
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<LoginPage initialMode="login" />} />
+      <Route path="/verify-otp" element={<OtpVerificationPage />} />
       <Route path="/register" element={<LoginPage initialMode="register" />} />
 
       {/* Protected App Routes */}

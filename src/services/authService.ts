@@ -70,7 +70,58 @@ export const authService = {
 
     // Default to unauthenticated (never auto-login as admin)
     return null;
+  }, // end of signUp
+
+  /**
+   * Verify OTP for signup
+   */
+  async verifySignupOtp(email: string, token: string) {
+    if (isSupabaseConfigured) {
+      const { data, error } = await supabase.auth.verifyOtp({
+        email,
+        token,
+        type: 'signup',
+      });
+      if (error) {
+        const msg = (error.message || '').toLowerCase();
+        if (msg.includes('invalid')) throw new Error('INVALID_OTP');
+        if (msg.includes('expired')) throw new Error('EXPIRED_OTP');
+        if (msg.includes('rate limit')) throw new Error('RATE_LIMIT');
+        throw error;
+      }
+      return data;
+    }
+    if (isProduction) {
+      throw new Error('OTP verification not available in production mock mode');
+    }
+    const profiles = getStoredProfiles();
+    const profile = profiles.find(p => p.email.toLowerCase() === email.toLowerCase());
+    if (!profile) throw new Error('User not found');
+    return { user: profile };
   },
+
+  /**
+   * Resend OTP for signup
+   */
+  async resendSignupOtp(email: string) {
+    if (isSupabaseConfigured) {
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email,
+      });
+      if (error) {
+        const msg = (error.message || '').toLowerCase();
+        if (msg.includes('rate limit')) throw new Error('RATE_LIMIT');
+        throw error;
+      }
+      return;
+    }
+    if (isProduction) {
+      throw new Error('Resend OTP not available in production mock mode');
+    }
+    return;
+  },
+
 
   /**
    * Fetch current user's profile from database
@@ -93,7 +144,58 @@ export const authService = {
 
     const profiles = getStoredProfiles();
     return profiles.find(p => p.id === userId) || null;
+  }, // end of signUp
+
+  /**
+   * Verify OTP for signup
+   */
+  async verifySignupOtp(email: string, token: string) {
+    if (isSupabaseConfigured) {
+      const { data, error } = await supabase.auth.verifyOtp({
+        email,
+        token,
+        type: 'signup',
+      });
+      if (error) {
+        const msg = (error.message || '').toLowerCase();
+        if (msg.includes('invalid')) throw new Error('INVALID_OTP');
+        if (msg.includes('expired')) throw new Error('EXPIRED_OTP');
+        if (msg.includes('rate limit')) throw new Error('RATE_LIMIT');
+        throw error;
+      }
+      return data;
+    }
+    if (isProduction) {
+      throw new Error('OTP verification not available in production mock mode');
+    }
+    const profiles = getStoredProfiles();
+    const profile = profiles.find(p => p.email.toLowerCase() === email.toLowerCase());
+    if (!profile) throw new Error('User not found');
+    return { user: profile };
   },
+
+  /**
+   * Resend OTP for signup
+   */
+  async resendSignupOtp(email: string) {
+    if (isSupabaseConfigured) {
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email,
+      });
+      if (error) {
+        const msg = (error.message || '').toLowerCase();
+        if (msg.includes('rate limit')) throw new Error('RATE_LIMIT');
+        throw error;
+      }
+      return;
+    }
+    if (isProduction) {
+      throw new Error('Resend OTP not available in production mock mode');
+    }
+    return;
+  },
+
 
   /**
    * Sign In with Email & Password
@@ -145,7 +247,58 @@ export const authService = {
 
     localStorage.setItem(DEMO_USER_KEY, JSON.stringify(profile));
     return { user: profile, session: { user: profile } };
+  }, // end of signUp
+
+  /**
+   * Verify OTP for signup
+   */
+  async verifySignupOtp(email: string, token: string) {
+    if (isSupabaseConfigured) {
+      const { data, error } = await supabase.auth.verifyOtp({
+        email,
+        token,
+        type: 'signup',
+      });
+      if (error) {
+        const msg = (error.message || '').toLowerCase();
+        if (msg.includes('invalid')) throw new Error('INVALID_OTP');
+        if (msg.includes('expired')) throw new Error('EXPIRED_OTP');
+        if (msg.includes('rate limit')) throw new Error('RATE_LIMIT');
+        throw error;
+      }
+      return data;
+    }
+    if (isProduction) {
+      throw new Error('OTP verification not available in production mock mode');
+    }
+    const profiles = getStoredProfiles();
+    const profile = profiles.find(p => p.email.toLowerCase() === email.toLowerCase());
+    if (!profile) throw new Error('User not found');
+    return { user: profile };
   },
+
+  /**
+   * Resend OTP for signup
+   */
+  async resendSignupOtp(email: string) {
+    if (isSupabaseConfigured) {
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email,
+      });
+      if (error) {
+        const msg = (error.message || '').toLowerCase();
+        if (msg.includes('rate limit')) throw new Error('RATE_LIMIT');
+        throw error;
+      }
+      return;
+    }
+    if (isProduction) {
+      throw new Error('Resend OTP not available in production mock mode');
+    }
+    return;
+  },
+
 
   /**
    * Sign Up with Email, Password & Full Name
@@ -158,8 +311,110 @@ export const authService = {
         options: {
           data: {
             full_name: fullName,
-          },
-        },
+          }, // end of signUp
+
+  /**
+   * Verify OTP for signup
+   */
+  async verifySignupOtp(email: string, token: string) {
+    if (isSupabaseConfigured) {
+      const { data, error } = await supabase.auth.verifyOtp({
+        email,
+        token,
+        type: 'signup',
+      });
+      if (error) {
+        const msg = (error.message || '').toLowerCase();
+        if (msg.includes('invalid')) throw new Error('INVALID_OTP');
+        if (msg.includes('expired')) throw new Error('EXPIRED_OTP');
+        if (msg.includes('rate limit')) throw new Error('RATE_LIMIT');
+        throw error;
+      }
+      return data;
+    }
+    if (isProduction) {
+      throw new Error('OTP verification not available in production mock mode');
+    }
+    const profiles = getStoredProfiles();
+    const profile = profiles.find(p => p.email.toLowerCase() === email.toLowerCase());
+    if (!profile) throw new Error('User not found');
+    return { user: profile };
+  },
+
+  /**
+   * Resend OTP for signup
+   */
+  async resendSignupOtp(email: string) {
+    if (isSupabaseConfigured) {
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email,
+      });
+      if (error) {
+        const msg = (error.message || '').toLowerCase();
+        if (msg.includes('rate limit')) throw new Error('RATE_LIMIT');
+        throw error;
+      }
+      return;
+    }
+    if (isProduction) {
+      throw new Error('Resend OTP not available in production mock mode');
+    }
+    return;
+  },
+
+        }, // end of signUp
+
+  /**
+   * Verify OTP for signup
+   */
+  async verifySignupOtp(email: string, token: string) {
+    if (isSupabaseConfigured) {
+      const { data, error } = await supabase.auth.verifyOtp({
+        email,
+        token,
+        type: 'signup',
+      });
+      if (error) {
+        const msg = (error.message || '').toLowerCase();
+        if (msg.includes('invalid')) throw new Error('INVALID_OTP');
+        if (msg.includes('expired')) throw new Error('EXPIRED_OTP');
+        if (msg.includes('rate limit')) throw new Error('RATE_LIMIT');
+        throw error;
+      }
+      return data;
+    }
+    if (isProduction) {
+      throw new Error('OTP verification not available in production mock mode');
+    }
+    const profiles = getStoredProfiles();
+    const profile = profiles.find(p => p.email.toLowerCase() === email.toLowerCase());
+    if (!profile) throw new Error('User not found');
+    return { user: profile };
+  },
+
+  /**
+   * Resend OTP for signup
+   */
+  async resendSignupOtp(email: string) {
+    if (isSupabaseConfigured) {
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email,
+      });
+      if (error) {
+        const msg = (error.message || '').toLowerCase();
+        if (msg.includes('rate limit')) throw new Error('RATE_LIMIT');
+        throw error;
+      }
+      return;
+    }
+    if (isProduction) {
+      throw new Error('Resend OTP not available in production mock mode');
+    }
+    return;
+  },
+
       });
       if (error) throw error;
       return data;
@@ -201,7 +456,58 @@ export const authService = {
 
     localStorage.setItem(DEMO_USER_KEY, JSON.stringify(newProfile));
     return { user: newProfile, session: { user: newProfile } };
+  }, // end of signUp
+
+  /**
+   * Verify OTP for signup
+   */
+  async verifySignupOtp(email: string, token: string) {
+    if (isSupabaseConfigured) {
+      const { data, error } = await supabase.auth.verifyOtp({
+        email,
+        token,
+        type: 'signup',
+      });
+      if (error) {
+        const msg = (error.message || '').toLowerCase();
+        if (msg.includes('invalid')) throw new Error('INVALID_OTP');
+        if (msg.includes('expired')) throw new Error('EXPIRED_OTP');
+        if (msg.includes('rate limit')) throw new Error('RATE_LIMIT');
+        throw error;
+      }
+      return data;
+    }
+    if (isProduction) {
+      throw new Error('OTP verification not available in production mock mode');
+    }
+    const profiles = getStoredProfiles();
+    const profile = profiles.find(p => p.email.toLowerCase() === email.toLowerCase());
+    if (!profile) throw new Error('User not found');
+    return { user: profile };
   },
+
+  /**
+   * Resend OTP for signup
+   */
+  async resendSignupOtp(email: string) {
+    if (isSupabaseConfigured) {
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email,
+      });
+      if (error) {
+        const msg = (error.message || '').toLowerCase();
+        if (msg.includes('rate limit')) throw new Error('RATE_LIMIT');
+        throw error;
+      }
+      return;
+    }
+    if (isProduction) {
+      throw new Error('Resend OTP not available in production mock mode');
+    }
+    return;
+  },
+
 
   /**
    * Sign Out
@@ -211,7 +517,58 @@ export const authService = {
       await supabase.auth.signOut();
     }
     localStorage.removeItem(DEMO_USER_KEY);
+  }, // end of signUp
+
+  /**
+   * Verify OTP for signup
+   */
+  async verifySignupOtp(email: string, token: string) {
+    if (isSupabaseConfigured) {
+      const { data, error } = await supabase.auth.verifyOtp({
+        email,
+        token,
+        type: 'signup',
+      });
+      if (error) {
+        const msg = (error.message || '').toLowerCase();
+        if (msg.includes('invalid')) throw new Error('INVALID_OTP');
+        if (msg.includes('expired')) throw new Error('EXPIRED_OTP');
+        if (msg.includes('rate limit')) throw new Error('RATE_LIMIT');
+        throw error;
+      }
+      return data;
+    }
+    if (isProduction) {
+      throw new Error('OTP verification not available in production mock mode');
+    }
+    const profiles = getStoredProfiles();
+    const profile = profiles.find(p => p.email.toLowerCase() === email.toLowerCase());
+    if (!profile) throw new Error('User not found');
+    return { user: profile };
   },
+
+  /**
+   * Resend OTP for signup
+   */
+  async resendSignupOtp(email: string) {
+    if (isSupabaseConfigured) {
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email,
+      });
+      if (error) {
+        const msg = (error.message || '').toLowerCase();
+        if (msg.includes('rate limit')) throw new Error('RATE_LIMIT');
+        throw error;
+      }
+      return;
+    }
+    if (isProduction) {
+      throw new Error('Resend OTP not available in production mock mode');
+    }
+    return;
+  },
+
 
   /**
    * Database-backed server-side Admin verification
@@ -253,7 +610,58 @@ export const authService = {
 
     const adminRoles = getStoredAdminRoles();
     return adminRoles.some((r: any) => r.user_id === userId);
+  }, // end of signUp
+
+  /**
+   * Verify OTP for signup
+   */
+  async verifySignupOtp(email: string, token: string) {
+    if (isSupabaseConfigured) {
+      const { data, error } = await supabase.auth.verifyOtp({
+        email,
+        token,
+        type: 'signup',
+      });
+      if (error) {
+        const msg = (error.message || '').toLowerCase();
+        if (msg.includes('invalid')) throw new Error('INVALID_OTP');
+        if (msg.includes('expired')) throw new Error('EXPIRED_OTP');
+        if (msg.includes('rate limit')) throw new Error('RATE_LIMIT');
+        throw error;
+      }
+      return data;
+    }
+    if (isProduction) {
+      throw new Error('OTP verification not available in production mock mode');
+    }
+    const profiles = getStoredProfiles();
+    const profile = profiles.find(p => p.email.toLowerCase() === email.toLowerCase());
+    if (!profile) throw new Error('User not found');
+    return { user: profile };
   },
+
+  /**
+   * Resend OTP for signup
+   */
+  async resendSignupOtp(email: string) {
+    if (isSupabaseConfigured) {
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email,
+      });
+      if (error) {
+        const msg = (error.message || '').toLowerCase();
+        if (msg.includes('rate limit')) throw new Error('RATE_LIMIT');
+        throw error;
+      }
+      return;
+    }
+    if (isProduction) {
+      throw new Error('Resend OTP not available in production mock mode');
+    }
+    return;
+  },
+
 
   /**
    * Switch user in local Demo mode (disabled in production and when Supabase is connected)
@@ -267,7 +675,58 @@ export const authService = {
     if (user) {
       localStorage.setItem(DEMO_USER_KEY, JSON.stringify(user));
     }
+  }, // end of signUp
+
+  /**
+   * Verify OTP for signup
+   */
+  async verifySignupOtp(email: string, token: string) {
+    if (isSupabaseConfigured) {
+      const { data, error } = await supabase.auth.verifyOtp({
+        email,
+        token,
+        type: 'signup',
+      });
+      if (error) {
+        const msg = (error.message || '').toLowerCase();
+        if (msg.includes('invalid')) throw new Error('INVALID_OTP');
+        if (msg.includes('expired')) throw new Error('EXPIRED_OTP');
+        if (msg.includes('rate limit')) throw new Error('RATE_LIMIT');
+        throw error;
+      }
+      return data;
+    }
+    if (isProduction) {
+      throw new Error('OTP verification not available in production mock mode');
+    }
+    const profiles = getStoredProfiles();
+    const profile = profiles.find(p => p.email.toLowerCase() === email.toLowerCase());
+    if (!profile) throw new Error('User not found');
+    return { user: profile };
   },
+
+  /**
+   * Resend OTP for signup
+   */
+  async resendSignupOtp(email: string) {
+    if (isSupabaseConfigured) {
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email,
+      });
+      if (error) {
+        const msg = (error.message || '').toLowerCase();
+        if (msg.includes('rate limit')) throw new Error('RATE_LIMIT');
+        throw error;
+      }
+      return;
+    }
+    if (isProduction) {
+      throw new Error('Resend OTP not available in production mock mode');
+    }
+    return;
+  },
+
 
   getAllProfiles(): UserProfile[] {
     if (isProduction || isSupabaseConfigured) return [];

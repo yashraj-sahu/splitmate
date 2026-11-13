@@ -40,15 +40,26 @@ export const LoginPage: React.FC<{ initialMode?: 'login' | 'register' }> = ({ in
           return;
         }
         await signUp(email.trim(), password, fullName.trim());
-        showToast('Account created successfully!', 'success');
-      } else {
+        // After successful signup, Supabase will have sent an OTP.
+        // Navigate to verification screen, passing email via location state.
+        navigate('/verify-otp', { replace: true, state: { email: email.trim(), isLoginFlow: false } });
+        return; // stop further navigation
+
         await signIn(email.trim(), password);
         showToast('Signed in successfully!', 'success');
       }
       navigate(from, { replace: true });
     } catch (err: any) {
       console.error('Authentication error:', err);
-      setError(err.message || 'Authentication failed. Please check credentials.');
+      // Duplicate registration handling
+      if (err.message === 'ALREADY_REGISTERED' || err.message?.toLowerCase().includes('already_registered')) {
+        setError('An account with this email already exists. Please log in instead.');
+      } else if (err.message?.toLowerCase().includes('user not confirmed')) {
+        // Unverified login – navigate to OTP verification flow
+        navigate('/verify-otp', { replace: true, state: { email: email.trim(), isLoginFlow: true } });
+      } else {
+        setError(err.message || 'Authentication failed. Please check credentials.');
+      }
     } finally {
       setSubmitting(false);
     }
